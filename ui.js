@@ -1,18 +1,34 @@
-import { getGoogleSheetsData } from "./utils";
-
 let pollingIntervalId;
 
+const API_KEY = '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'; // Replace with your API key
+const CLIEND_ID = '440901229794-cdjfb5nj8gmng5jj0sris6fhre3feedu.apps.googleusercontent.com';
+
 console.log('cargando ui.js');
+
+async function getGoogleSheetsData(sheetId, range) {
+  await gapi.client.init({
+    apiKey: API_KEY,
+    clientId: CLIEND_ID,
+    scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
+  });
+
+  // Sign in the user and load the Google Sheets API client
+  await gapi.auth2.getAuthInstance().signIn();
+  await gapi.client.load('sheets', 'v4');
+
+  const response = await gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: range,
+  });
+
+  return response.result.values;
+}
 
 async function loadPlayerData() {
   const sheetId = '1gOEwD7nhh9EIZ96z4sEEy-3neCom0XMasMRxJ8buS9s';
   const range = 'A1:B11';
-  const credentials = {
-    client_email: '440901229794-cdjfb5nj8gmng5jj0sris6fhre3feedu.apps.googleusercontent.com',
-    private_key: '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',
-  };
 
-  const data = await getGoogleSheetsData(sheetId, range, credentials);
+  const data = await getGoogleSheetsData(sheetId, range);
 
   if (data) {
     const team1Players = document.getElementById('team1-players');
@@ -33,12 +49,8 @@ async function loadPlayerData() {
 async function loadSubstitutionData() {
   const sheetId = '1gOEwD7nhh9EIZ96z4sEEy-3neCom0XMasMRxJ8buS9s';
   const range = 'C1:E11';
-  const credentials = {
-    client_email: '440901229794-cdjfb5nj8gmng5jj0sris6fhre3feedu.apps.googleusercontent.com',
-    private_key: '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',
-  };
 
-  const data = await getGoogleSheetsData(sheetId, range, credentials);
+  const data = await getGoogleSheetsData(sheetId, range);
 
   if (data) {
     const substitutionsList = document.getElementById('substitutions');
@@ -110,7 +122,7 @@ function startClock() {
   console.log('entrando en esta monda');
   if (!isClockRunning) {
     isClockRunning = true;
-        clockInterval = setInterval(() => {
+    clockInterval = setInterval(() => {
       elapsedTime++;
       updateClockDisplay();
     }, 1000);
@@ -130,6 +142,8 @@ function resetClock() {
   elapsedTime = 0;
   updateClockDisplay();
 }
+
+
 
 document.getElementById('start-clock-btn').addEventListener('click', startClock);
 document.getElementById('stop-clock-btn').addEventListener('click', stopClock);
