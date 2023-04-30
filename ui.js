@@ -119,7 +119,6 @@ function updateClockDisplay() {
 }
 
 function startClock() {
-  console.log('entrando en esta monda');
   if (!isClockRunning) {
     isClockRunning = true;
     clockInterval = setInterval(() => {
@@ -130,7 +129,6 @@ function startClock() {
 }
 
 function stopClock() {
-  console.log('deteniendo esta monda');
   if (isClockRunning) {
     isClockRunning = false;
     clearInterval(clockInterval);
@@ -138,7 +136,6 @@ function stopClock() {
 }
 
 function resetClock() {
-  console.log('reseteando esta monda');
   elapsedTime = 0;
   updateClockDisplay();
 }
