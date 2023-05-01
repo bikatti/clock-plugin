@@ -1,14 +1,14 @@
 let pollingIntervalId;
 
 const API_KEY = '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'; // Replace with your API key
-const CLIEND_ID = '440901229794-cdjfb5nj8gmng5jj0sris6fhre3feedu.apps.googleusercontent.com';
+const CLIENT_ID = '440901229794-cdjfb5nj8gmng5jj0sris6fhre3feedu.apps.googleusercontent.com';
 
-console.log('cargando ui.js');
+console.log('Loading ui.js');
 
 async function getGoogleSheetsData(sheetId, range) {
   await gapi.client.init({
     apiKey: API_KEY,
-    clientId: CLIEND_ID,
+    clientId: CLIENT_ID,
     scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
   });
 
@@ -119,7 +119,6 @@ function updateClockDisplay() {
 }
 
 function startClock() {
-  console.log('entrando en esta monda');
   if (!isClockRunning) {
     isClockRunning = true;
     clockInterval = setInterval(() => {
@@ -130,7 +129,6 @@ function startClock() {
 }
 
 function stopClock() {
-  console.log('deteniendo esta monda');
   if (isClockRunning) {
     isClockRunning = false;
     clearInterval(clockInterval);
@@ -138,12 +136,9 @@ function stopClock() {
 }
 
 function resetClock() {
-  console.log('reseteando esta monda');
   elapsedTime = 0;
   updateClockDisplay();
 }
-
-
 
 document.getElementById('start-clock-btn').addEventListener('click', startClock);
 document.getElementById('stop-clock-btn').addEventListener('click', stopClock);
